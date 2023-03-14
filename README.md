@@ -1,4 +1,3 @@
-key - AIzaSyCR5sTzUGWR6Lm4_spYeDeF5v9NdbvgL6Y
 # Проект Ютуб-аналитика
 
 ## Домашние задания по Python ООП
