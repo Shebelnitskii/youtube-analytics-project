@@ -11,6 +11,19 @@ class Channel:
         api_key: str = os.getenv('YT_API_KEY')
         self.youtube = build('youtube', 'v3', developerKey=api_key)
 
+    def __str__(self):
+        channel = self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
+        return f"{channel['items'][0]['snippet']['title']} (https://www.youtube.com/channel/{channel['items'][0]['id']})"
+
+    def __add__(self, other) -> int or float:
+        """Добавляет другие канала в один."""
+        return int(self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()['items'][0]['statistics']['subscriberCount']) + int(other.youtube.channels().list(id=other.channel_id, part='snippet,statistics').execute()['items'][0]['statistics']['subscriberCount'])
+
+    def __sub__(self, other) -> int or float:
+        return int(self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()['items'][0]['statistics']['subscriberCount']) - int(other.youtube.channels().list(id=other.channel_id, part='snippet,statistics').execute()['items'][0]['statistics']['subscriberCount'])
+
+    def __ge__(self, other) -> bool:
+        return int(self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()['items'][0]['statistics']['subscriberCount']) >= int(other.youtube.channels().list(id=other.channel_id, part='snippet,statistics').execute()['items'][0]['statistics']['subscriberCount'])
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
